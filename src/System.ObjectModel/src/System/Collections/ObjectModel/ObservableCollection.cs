@@ -314,6 +314,23 @@ namespace System.Collections.ObjectModel
         //------------------------------------------------------
 
         #region Private Methods
+
+        // Used via reflection by Metrohm Nova 2.1.9 (wine bug 60317) - copied from referencesource
+        private void CopyFrom(IEnumerable<T> collection)
+        {
+            IList<T> items = Items;
+            if (collection != null && items != null)
+            {
+                using (IEnumerator<T> enumerator = collection.GetEnumerator())
+                {
+                    while (enumerator.MoveNext())
+                    {
+                        items.Add(enumerator.Current);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Helper to raise a PropertyChanged event for the Count property
         /// </summary>
